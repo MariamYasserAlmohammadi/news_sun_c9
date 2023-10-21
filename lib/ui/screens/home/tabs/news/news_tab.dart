@@ -28,12 +28,13 @@ class _NewsTabState extends State<NewsTab> {
 
   Widget buildTabs(List<Source> list) {
     return DefaultTabController(
-      length: 2,
+      length: list.length,
       child: Column(children: [
         SizedBox(
           height: 8,
         ),
         TabBar(
+          isScrollable: true,
             onTap: (index) {
               currentTabIndex = index;
               setState(() {
@@ -41,11 +42,7 @@ class _NewsTabState extends State<NewsTab> {
               });
             },
             indicatorColor: Colors.transparent,
-            tabs: list
-                .map((source) => buildTabWidget(
-                    source.name ?? "",
-                currentTabIndex == list.indexOf(source)))
-                .toList()),
+            tabs: list.map((source) => buildTabWidget(source.name ?? "", currentTabIndex == list.indexOf(source))).toList()),
         Expanded(
           child: TabBarView(
               children: list
