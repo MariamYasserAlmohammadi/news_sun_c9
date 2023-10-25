@@ -21,7 +21,7 @@ class ArticleWidget extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: article.urlToImage ?? "",
              placeholder: (_,__)=> const Center(child: CircularProgressIndicator()),
-              errorWidget: (_,__,___)=> Icon(Icons.error),
+              errorWidget: (_,__,___)=> const Icon(Icons.error),
               height: MediaQuery.of(context).size.height * .25,
               fit: BoxFit.cover,
             ),
@@ -51,5 +51,18 @@ class ArticleWidget extends StatelessWidget {
           ),],
       ),
     );
+  }
+
+}
+class X{
+  late int _x;
+  late int y;
+  late String product;
+
+  set productName(String newName){
+    product = "xx" + newName;
+  }
+  String get productName{
+    return " "+ product;
   }
 }

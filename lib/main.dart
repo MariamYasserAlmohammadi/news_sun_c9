@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_sun_c9/ui/screens/home/home_screen.dart';
+import 'package:news_sun_c9/ui/screens/home/tabs/news/news_tab_view_modal.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        HomeScreen.routeName :(context)=> HomeScreen(),
+        HomeScreen.routeName :(context)=> const HomeScreen(),
       },
       initialRoute: HomeScreen.routeName,
     );

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:news_sun_c9/data/api/api_manager.dart';
 import 'package:news_sun_c9/data/modal/ArticlesResponse.dart';
 import 'package:news_sun_c9/data/modal/SourcesResponse.dart';
+import 'package:news_sun_c9/ui/screens/home/tabs/news/news_tab_view_modal.dart';
+import 'package:news_sun_c9/widgets/error_view.dart';
+import 'package:news_sun_c9/widgets/loading_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'news_list.dart';
@@ -15,20 +18,45 @@ class NewsTab extends StatefulWidget {
 
 class _NewsTabState extends State<NewsTab> {
   int currentTabIndex = 0;
-
+  NewsTabViewModal viewModal =NewsTabViewModal() ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
+      viewModal.getSources(widget.categoryId);
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: ApiManager.getSources(widget.categoryId),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return buildTabs(snapshot.data!);
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
+  //  viewModal =Provider.of(context);
+     return ChangeNotifierProvider(
+         create: (_)=> viewModal,
+         child: Consumer<NewsTabViewModal>(
+           builder: (context,viewModel,_){
+             Widget currentView;
+             if (viewModal.isLoading){
+               currentView =const LoadingWidget();
+             }else if(viewModal.sources.isNotEmpty){
+               currentView =buildTabs(viewModal.sources);
+             }else{
+               currentView =ErrorView(message: viewModal.errorText??"");
+             }
+             return currentView;
+           },
+         ),
+         ) ;
+     
+      // FutureBuilder(
+      //   future: ApiManager.getSources(widget.categoryId),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+      //       return buildTabs(snapshot.data!);
+      //     } else if (snapshot.hasError) {
+      //       return ErrorView(message: snapshot.error.toString());
+      //     } else {
+      //       return const LoadingWidget();
+      //     }
+      //   });
   }
 
 
@@ -76,3 +104,4 @@ class _NewsTabState extends State<NewsTab> {
     );
   }
 }
+
